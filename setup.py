@@ -29,8 +29,8 @@ setup(
         "Topic :: Communications",
     ],
     install_requires=[
-        "pyserial >= 3.1.1",
-        "pylibiqrf >= 0.0.1"
+        "pyserial >= 3.1.1"#,
+#        "pylibiqrf >= 0.0.1"
     ]
 )
 
