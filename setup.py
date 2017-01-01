@@ -1,6 +1,6 @@
 from setuptools import setup
 
-with open("readme.md") as stream:
+with open("README.md") as stream:
     long_description = stream.read()
 
 setup(
@@ -9,7 +9,7 @@ setup(
     version="0.0.1",
     author="Roman Ondráček",
     author_email="ondracek.roman@centrum.cz",
-    url="https://github.com/Roman3349/rpigw",
+    url="https://github.com/Roman3349/rpi-gw",
     package_dir={"": "src"},
     packages=[
         "rpigw",
@@ -20,11 +20,9 @@ setup(
     long_description=long_description,
     classifiers=[
         "Development Status :: 3 - Alpha",
-        "Intended Audience :: Developers",
         "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
         "Natural Language :: English",
         "Operating System :: POSIX",
-        "Operating System :: Microsoft :: Windows",
         "Programming Language :: Python",
         "Programming Language :: Python :: 3.5",
         "Topic :: Communications",
