@@ -7,6 +7,6 @@ READ_CONFIG = {"gsm":{"enabled":True,"interface":"usb-acm","interfaces":{"usb-ac
 
 class ConfigTests(unittest.TestCase):
 
-	def test_read(self):
-		self.assertEqual(config.Config("./test/config.json").read(), READ_CONFIG)
-		self.assertEqual(config.Config("./test/config0.json").read(), False)
+    def test_read(self):
+        self.assertEqual(config.Config("./test/config.json").read(), READ_CONFIG)
+        self.assertEqual(config.Config("./test/config0.json").read(), False)
