@@ -1,4 +1,5 @@
 import json
+import math
 
 class Config:
 
@@ -10,5 +11,5 @@ class Config:
 			with open(self.file) as jsonData:
 				return(json.load(jsonData))
 		except IOError:
-			return(float('NaN'))
+			return(False)
 
