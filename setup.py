@@ -14,7 +14,8 @@ setup(
     packages=[
         "rpigw",
         "rpigw.gsm",
-        "rpigw.iqrf"
+        "rpigw.iqrf",
+        "rpigw.util"
     ],
     license="GPL v3",
     long_description=long_description,
@@ -30,9 +31,6 @@ setup(
     install_requires=[
         "pyserial >= 3.1.1",
         "pylibiqrf >= 0.0.1"
-    ],
-    dependency_links=[
-        "https://github.com/iqrfsdk/pylibiqrf/tarball/master"
     ]
 )
 
