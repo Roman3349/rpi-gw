@@ -1,6 +1,25 @@
 {
     "gsm": {
-        "port": "/dev/ttyACM0",
-        "baud_rate": "9600"
+        "enabled": true,
+        "interface": "usb-acm",
+        "interfaces": {
+            "usb-acm": {
+                "port": "/dev/ttyACM0",
+                "baud_rate": "9600"
+            }
+        }
+    },
+    "iqrf": {
+        "enabled": true,
+        "interface": "spi",
+        "interfaces": {
+            "spi": {
+                "port": "/dev/spidev0.0"
+            },
+            "usb-acm": {
+                "port": "/dev/ttyACM1",
+                "baud_rate": "9600"
+            }
+        }
     }
 }
