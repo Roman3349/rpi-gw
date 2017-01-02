@@ -13,7 +13,7 @@ matrix:
           env: TOX_ENV=py34
 
 install:
-    - pip install tox
+    - pip install codecov nose tox
     - pip install -U https://github.com/iqrfsdk/pylibiqrf/archive/master.zip
     - python setup.py install
 
