@@ -19,4 +19,6 @@ install:
 
 script:
     - tox -e $TOX_ENV
-
+after_success:
+    - if [[ "$TOX_ENV" == "py35" ]]; then nosetests ./test -v --with-coverage --cover-xml --cover-package=rpigw; fi
+    - if [[ "$TOX_ENV" == "py35" ]]; then codecov; fi
