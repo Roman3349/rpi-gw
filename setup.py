@@ -29,8 +29,9 @@ setup(
         "Topic :: Communications",
     ],
     install_requires=[
-        "pyserial >= 3.1.1"#,
+        "pyserial >= 3.1.1",
+        "PyYAML >= 3.12",
+        "python-gsmmodem-new >= 0.11"
 #        "pylibiqrf >= 0.0.1"
     ]
 )
-

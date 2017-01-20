@@ -13,41 +13,48 @@ A test of an implementation of configuration.
 import unittest
 
 from rpigw.util import config
+from collections import OrderedDict
 
 READ_CONFIG = {
-    "gsm":{
-        "enabled":True,
-        "interface":"usb-acm",
-        "interfaces":{
-            "usb-acm":{
-                "port":"/dev/ttyACM0",
-                "baud_rate":"9600"
-            }
-        }
+  "gsm": {
+    "enabled": True,
+    "interface": "uart",
+    "interfaces": {
+      "uart": {
+        "port": "/dev/ttyUSB0",
+        "baudRate": 9600
+      }
     },
-    "iqrf":{
-        "enabled":True,
-        "interface":"spi",
-        "interfaces":{
-            "spi":{
-                "port":"/dev/spidev0.0"
-            },
-            "usb-acm":{
-                "port":"/dev/ttyACM1",
-                "baud_rate":"9600"
-            }
-        }
+    "pin": False
+  },
+  "iqrf": {
+    "enabled": True,
+    "interface": "spi",
+    "interfaces": {
+      "spi": {
+        "port": "/dev/spidev0.0"
+      },
+      "uart": {
+        "port": "/dev/ttyACM0",
+        "baudRate": 9600
+      }
     }
+  }
 }
 
 class ConfigTests(unittest.TestCase):
     """
-
+        Test configuration
     """
 
-    def test_read(self):
+    def test_read_success(self):
         """
-        Test reading configuration from file
+        [util] Test reading configuration from file
         """
-        self.assertEqual(config.Config("./test/config.json").read(), READ_CONFIG)
-        self.assertEqual(config.Config("./test/config0.json").read(), False)
+        self.assertEqual(config.Config("./test/config.yml").read(), READ_CONFIG)
+
+    def test_read_fail(self):
+        """
+        [util] Test reading configuration from non-existing file
+        """
+        self.assertEqual(config.Config("./test/config0.yml").read(), False)

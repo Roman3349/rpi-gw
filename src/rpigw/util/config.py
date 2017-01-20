@@ -11,7 +11,8 @@ An implementation of configuration.
 """
 
 
-import json
+import yaml
+
 
 class Config(object):
 
@@ -23,7 +24,7 @@ class Config(object):
         Read configuration from file
         """
         try:
-            with open(self.config_file) as json_data:
-                return json.load(json_data)
+            with open(self.config_file) as yaml_file:
+                return yaml.load(yaml_file)
         except IOError:
             return False

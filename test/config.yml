@@ -1,0 +1,18 @@
+gsm:
+  enabled: true
+  interface: uart
+  interfaces:
+    uart:
+      port: "/dev/ttyUSB0"
+      baudRate: 9600
+  pin: false
+
+iqrf:
+  enabled: true
+  interface: spi
+  interfaces:
+    spi:
+      port: "/dev/spidev0.0"
+    uart:
+      port: "/dev/ttyACM0"
+      baudRate: 9600
