@@ -18,14 +18,9 @@ from collections import OrderedDict
 READ_CONFIG = {
   "gsm": {
     "enabled": True,
-    "interface": "uart",
-    "interfaces": {
-      "uart": {
-        "port": "/dev/ttyUSB0",
-        "baudRate": 9600
-      }
-    },
-    "pin": False
+    "port": "/dev/ttyUSB0",
+    "baudRate": 9600,
+    "pin": None
   },
   "iqrf": {
     "enabled": True,

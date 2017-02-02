@@ -13,8 +13,8 @@ setup(
     package_dir={"": "src"},
     packages=[
         "rpigw",
-        "rpigw.gsm",
-        "rpigw.iqrf",
+        "rpigw.devices",
+        "rpigw.protocols",
         "rpigw.util"
     ],
     license="GPL v3",
@@ -29,9 +29,8 @@ setup(
         "Topic :: Communications",
     ],
     install_requires=[
-        "pyserial >= 3.1.1",
         "PyYAML >= 3.12",
-        "python-gsmmodem-new >= 0.11"
+        "python-gammu >= 2.7"
 #        "pylibiqrf >= 0.0.1"
     ]
 )
