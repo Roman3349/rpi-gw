@@ -15,17 +15,17 @@ from iqrf.transport import spi
 
 class Iqrf(object):
 
-    def __init__(self):
+    def __init__(self, config):
         self.enabled = config['iqrf']['enabled']
         self.interface = config['iqrf']['interface']
-        self.interface_settings = config['iqrf']['interfaces'][self.interface]
+        self.port = config['iqrf']['interfaces'][self.interface]['port']
         self.device = None
 
         try:
             if (self.interface == 'cdc'):
-                self.device = cdc.open(self.interface_settings['port'])
+                self.device = cdc.open(self.port)
             elif (self.interface == 'spi'):
-                self.device = spi.open(self.interface_settings['port'])
+                self.device = spi.open(self.port)
             else:
                 raise Exception()
         except Exception as error:
@@ -37,6 +37,6 @@ class Iqrf(object):
             self.device.send(cdc.DataSendRequest(packet))
         elif (self.interface == 'spi'):
             self.device.send(spi.DataSendRequest(packet), timeout=5)
-        confirmation = device.receive(timeout=5).data
-        response = device.receive(timeout=5).data
+        confirmation = self.device.receive(timeout=5).data
+        response = self.device.receive(timeout=5).data
         return ({"confirmation": confirmation, "response": response})

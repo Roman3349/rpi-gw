@@ -34,7 +34,7 @@ READ_CONFIG = {
       "spi": {
         "port": "/dev/spidev0.0"
       },
-      "uart": {
+      "cdc": {
         "port": "/dev/ttyACM0",
         "baudRate": 9600
       }
