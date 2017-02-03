@@ -10,8 +10,9 @@ An implementation of a GSM communication.
 :license: GNU GPLv3, see LICENSE for more details.
 """
 
-import serial
 import time
+import serial
+
 
 class Gsm(object):
 
@@ -45,11 +46,11 @@ class Gsm(object):
         Read data form the AT modem
         @return Received data
         """
-        bytesToRead = self.serial.inWaiting()
-        while bytesToRead == 0:
-            bytesToRead = self.serial.inWaiting()
-        data = self.serial.read(bytesToRead)
-        return(data.decode('utf-8').strip())
+        bytes_to_read = self.serial.inWaiting()
+        while bytes_to_read == 0:
+            bytes_to_read = self.serial.inWaiting()
+        data = self.serial.read(bytes_to_read)
+        return data.decode('utf-8').strip()
 
     def write(self, data, ending='\r'):
         """
@@ -71,13 +72,13 @@ class Gsm(object):
         """
         Unlock SIM card
         """
-        if (self.pin == False):
+        if self.pin is False:
             pass
-        elif (isinstance(self.pin, int)):
+        elif isinstance(self.pin, int):
             self.write('AT+CPIN=' + str(self.pin))
             self.write('AT+CPIN?')
             status = self.read()
-            if (status == '+CPIN: READY'):
+            if status == '+CPIN: READY':
                 print('Correct PIN')
             else:
                 print('Incorrect PIN')
@@ -97,7 +98,7 @@ class Gsm(object):
         @return Text message(s)
         """
         self.write('AT+CMGL="' + type + '"')
-        return(self.read())
+        return self.read()
 
     def send_sms(self, number, text):
         """

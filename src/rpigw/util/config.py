@@ -10,7 +10,6 @@ An implementation of configuration.
 :license: GNU GPLv3, see LICENSE for more details.
 """
 
-
 import yaml
 
 

@@ -1,7 +1,8 @@
-import os, sys, logging
+import sys
 
 from rpigw.util.config import Config
 from rpigw.transport.gsm import Gsm
+
 
 def main():
     config_file = "./../../test/config.yml"
