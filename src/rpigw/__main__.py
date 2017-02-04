@@ -11,11 +11,12 @@ def main():
     gsm.write('AT')
     print(gsm.read())
     print(gsm.read_sms('ALL'))
-    #gsm.send_sms('+420702888729', 'Test')
-    #print(gsm.read())
-    #gsm.delete_sms(1)
-    #print(gsm.read())
+    # gsm.send_sms('+420702888729', 'Test')
+    # print(gsm.read())
+    # gsm.delete_sms(1)
+    # print(gsm.read())
     return 0
+
 
 if __name__ == "__main__":
     sys.exit(main())

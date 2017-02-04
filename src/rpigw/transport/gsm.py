@@ -11,8 +11,8 @@ An implementation of a GSM communication.
 """
 
 import time
-import serial
 import re
+import serial
 
 
 class Gsm(object):
@@ -107,8 +107,8 @@ class Gsm(object):
         @param text Encoded a text message
         @return Decoded a text message
         """
-        text = '\r\n' + re.sub('\r\nOK$', '',text).strip()
-        array = re.split('(?:\r\n)?\+CMGL:\ ', text.replace('"\r\n', ','))
+        text = '\r\n' + re.sub('\r\nOK$', '', text).strip()
+        array = re.split('(?:\r\n)?\+CMGL: ', text.replace('"\r\n', ','))
         del array[0]
         sms = list()
         for i in array:
