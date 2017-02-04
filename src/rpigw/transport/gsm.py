@@ -12,6 +12,7 @@ An implementation of a GSM communication.
 
 import time
 import serial
+import re
 
 
 class Gsm(object):
@@ -91,14 +92,39 @@ class Gsm(object):
         """
         self.write('AT+CMGF=1')
 
-    def read_sms(self, type):
+    def read_sms(self, msg_type):
         """
         Read a text messages
-        @param type Type of messages (ALL, REC UNREAD, REC READ)
+        @param msg_type Type of messages (ALL, REC UNREAD, REC READ)
         @return Text message(s)
         """
-        self.write('AT+CMGL="' + type + '"')
-        return self.read()
+        self.write('AT+CMGL="' + msg_type + '"')
+        return self.decode_sms(self.read())
+
+    def decode_sms(self, text):
+        """
+        Decode a text message
+        @param text Encoded a text message
+        @return Decoded a text message
+        """
+        text = '\r\n' + re.sub('\r\nOK$', '',text).strip()
+        array = re.split('(?:\r\n)?\+CMGL:\ ', text.replace('"\r\n', ','))
+        del array[0]
+        sms = list()
+        for i in array:
+            j = re.split('(?:\")?,(?:\")?', i)
+            _dict = {'id': j[0], 'status': j[1], 'number': j[2],
+                     'timestamp': (j[4] + ',' + j[5]), 'content': j[6]}
+            sms.append(_dict)
+            del _dict
+        return sms
+
+    def delete_sms(self, msg_id):
+        """
+        Delete a text message
+        @param msg_id ID of the text message
+        """
+        self.write('AT+CMGD=' + str(msg_id))
 
     def send_sms(self, number, text):
         """
