@@ -70,3 +70,15 @@ class IqrfTr(object):
         if pnum == IqrfTrPnum.LEDG or pnum == IqrfTrPnum.LEDR:
             packet = bytes([nadr, 0x00, pnum, 0x03, hwpid1, hwpid2])
             return self.iqrf.send_request(packet)
+
+    def led_status(self, nadr, pnum, hwpid=0xFFFF):
+        """
+        Status of a LED on TR module
+        @parma nadr Network address
+        @param pnum Peripherhal number
+        @param hwpid HW profile ID
+        """
+        hwpid1, hwpid2 = divmod(hwpid, 1 << 8)
+        if pnum == IqrfTrPnum.LEDG or pnum == IqrfTrPnum.LEDR:
+            packet = bytes([nadr, 0x00, pnum, 0x02, hwpid1, hwpid2])
+            return self.iqrf.send_request(packet)

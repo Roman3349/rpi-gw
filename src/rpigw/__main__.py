@@ -36,32 +36,25 @@ def read_sms(gsm, iqrf):
             if device == 'ledg':
                 if command == 'on' or command == 'zapnout':
                     response = iqrf_tr.led_on(address, IqrfTrPnum.LEDG)
-                    print('On')
                 elif command == 'off' or command == 'vypnout':
                     response = iqrf_tr.led_off(address, IqrfTrPnum.LEDG)
-                    print('Off')
                 elif command == 'blink' or command == 'bliknuti':
                     response = iqrf_tr.led_pulse(address, IqrfTrPnum.LEDG)
                 elif command == 'status' or command == 'stav':
-                    # TODO: send request to module
-                    print('Status')
+                    response = iqrf_tr.led_status(address, IqrfTrPnum.LEDG)
                 else:
                     print('Unknown')
                     content = 'Unknown command!\r\nNeznamy prikaz!'
                     # gsm.send_sms(i['number'], content)
             elif device == 'ledr':
                 if command == 'on' or command == 'zapnout':
-                    # TODO: send request to module
-                    print('On')
+                    response = iqrf_tr.led_on(address, IqrfTrPnum.LEDR)
                 elif command == 'off' or command == 'vypnout':
-                    # TODO: send request to module
-                    print('Off')
+                    response = iqrf_tr.led_off(address, IqrfTrPnum.LEDR)
                 elif command == 'blink' or command == 'bliknuti':
                     response = iqrf_tr.led_pulse(address, IqrfTrPnum.LEDR)
-                    print(response)
                 elif command == 'status' or command == 'stav':
-                    # TODO: send request to module
-                    print('Status')
+                    response = iqrf_tr.led_status(address, IqrfTrPnum.LEDR)
                 else:
                     print('Unknown')
                     content = 'Unknown command!\r\nNeznamy prikaz!'
