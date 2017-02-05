@@ -35,7 +35,7 @@ class IqrfTr(object):
     def __init__(self, iqrf):
         self.iqrf = iqrf
 
-    def pulse_led(self, nadr, pnum, hwpid):
+    def pulse_led(self, nadr, pnum, hwpid=0xFFFF):
         """
         Pulse a LED on TR module
         @parma nadr Network address
@@ -44,5 +44,5 @@ class IqrfTr(object):
         """
         hwpid1, hwpid2 = divmod(hwpid, 1 << 8)
         if pnum == IqrfTrPnum.LEDG or pnum == IqrfTrPnum.LEDR:
-            packet = bytes(nadr, pnum, 0x03, hwpid1, hwpid2)
+            packet = bytes(nadr, 0x00, pnum, 0x03, hwpid1, hwpid2)
             return self.iqrf.send_request(packet)
