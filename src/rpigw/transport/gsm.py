@@ -108,7 +108,7 @@ class Gsm(object):
         @return Decoded a text message
         """
         text = '\r\n' + re.sub('\r\nOK$', '', text).strip()
-        array = re.split('(?:\r\n)?\+CMGL: ', text.replace('"\r\n', ','))
+        array = re.split(r'(?:\r\n)?\+CMGL: ', text.replace('"\r\n', ','))
         del array[0]
         sms = list()
         for i in array:
