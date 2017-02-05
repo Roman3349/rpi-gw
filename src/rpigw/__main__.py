@@ -84,7 +84,7 @@ def read_sms(gsm, iqrf):
                     # gsm.send_sms(i['number'], content)
             else:
                 print('Uknown device')
-        threading.Timer(1, read_sms, [gsm, iqrf]).start()
+    threading.Timer(1, read_sms, [gsm, iqrf]).start()
 
 if __name__ == "__main__":
     sys.exit(main())
