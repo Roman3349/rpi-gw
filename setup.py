@@ -13,7 +13,7 @@ setup(
     package_dir={"": "src"},
     packages=[
         "rpigw",
-#        "rpigw.device",
+        "rpigw.device",
         "rpigw.transport",
         "rpigw.util"
     ],
@@ -31,7 +31,7 @@ setup(
     ],
     install_requires=[
         "pyserial >= 3.1.1",
-        "PyYAML >= 3.12"#,
+        "PyYAML >= 3.12"
 #        "pylibiqrf >= 0.0.1"
     ]
 )
