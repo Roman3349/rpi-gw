@@ -30,7 +30,7 @@ class SmartSocket(object):
         """
         hwpid1, hwpid2 = divmod(hwpid, 1 << 8)
         pnum = SmartSocketPnum.SMART_SOCKET
-        packet = bytes(nadr, 0x00, pnum, 0x02, hwpid1, hwpid2)
+        packet = bytes([nadr, 0x00, pnum, 0x02, hwpid1, hwpid2])
         return self.iqrf.send_request(packet)
 
     def set(self, nadr, status, hwpid=0xCDEF):
@@ -42,5 +42,5 @@ class SmartSocket(object):
         hwpid1, hwpid2 = divmod(hwpid, 1 << 8)
         if status == 0 or status == 1:
             pnum = SmartSocketPnum.SMART_SOCKET
-            packet = bytes(nadr, 0x00, pnum, status, hwpid1, hwpid2)
+            packet = bytes([nadr, 0x00, pnum, status, hwpid1, hwpid2])
             return self.iqrf.send_request(packet)

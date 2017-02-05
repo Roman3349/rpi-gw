@@ -44,5 +44,5 @@ class IqrfTr(object):
         """
         hwpid1, hwpid2 = divmod(hwpid, 1 << 8)
         if pnum == IqrfTrPnum.LEDG or pnum == IqrfTrPnum.LEDR:
-            packet = bytes(nadr, 0x00, pnum, 0x03, hwpid1, hwpid2)
+            packet = bytes([nadr, 0x00, pnum, 0x03, hwpid1, hwpid2])
             return self.iqrf.send_request(packet)
