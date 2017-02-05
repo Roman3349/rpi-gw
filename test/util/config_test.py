@@ -13,7 +13,6 @@ A test of an implementation of configuration.
 import unittest
 
 from rpigw.util import config
-from collections import OrderedDict
 
 READ_CONFIG = {
   "gsm": {
@@ -42,6 +41,7 @@ READ_CONFIG = {
   }
 }
 
+
 class ConfigTests(unittest.TestCase):
     """
         Test configuration
@@ -51,10 +51,12 @@ class ConfigTests(unittest.TestCase):
         """
         [util] Test reading configuration from file
         """
-        self.assertEqual(config.Config("./test/config.yml").read(), READ_CONFIG)
+        cfg_file = './test/config.yml'
+        self.assertEqual(config.Config(cfg_file).read(), READ_CONFIG)
 
     def test_read_fail(self):
         """
         [util] Test reading configuration from non-existing file
         """
-        self.assertEqual(config.Config("./test/config0.yml").read(), False)
+        cfg_file = './test/config0.yml'
+        self.assertEqual(config.Config(cfg_file).read(), False)
