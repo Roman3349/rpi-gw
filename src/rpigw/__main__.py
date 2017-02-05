@@ -31,17 +31,17 @@ def read_sms(gsm, iqrf):
         array = content.split()
         if len(array) is 3:
             device = array[0].lower()
-            address = array[1]
+            address = int(array[1])
             command = array[2].lower()
             if device == 'ledg':
                 if command == 'on' or command == 'zapnout':
-                    # TODO: send request to module
+                    response = iqrf_tr.led_on(address, IqrfTrPnum.LEDG)
                     print('On')
                 elif command == 'off' or command == 'vypnout':
-                    # TODO: send request to module
+                    response = iqrf_tr.led_off(address, IqrfTrPnum.LEDG)
                     print('Off')
                 elif command == 'blink' or command == 'bliknuti':
-                    response = iqrf_tr.pulse_led(address, IqrfTrPnum.LEDG)
+                    response = iqrf_tr.led_pulse(address, IqrfTrPnum.LEDG)
                 elif command == 'status' or command == 'stav':
                     # TODO: send request to module
                     print('Status')
@@ -57,7 +57,7 @@ def read_sms(gsm, iqrf):
                     # TODO: send request to module
                     print('Off')
                 elif command == 'blink' or command == 'bliknuti':
-                    response = iqrf_tr.pulse_led(address, IqrfTrPnum.LEDR)
+                    response = iqrf_tr.led_pulse(address, IqrfTrPnum.LEDR)
                     print(response)
                 elif command == 'status' or command == 'stav':
                     # TODO: send request to module
@@ -69,8 +69,6 @@ def read_sms(gsm, iqrf):
             elif device == 'socket' or device == 'zasuvka':
                 if command == 'on' or command == 'zapnout':
                     # TODO: send request to smart socket
-                    iqrf_tr = IqrfTr(iqrf)
-                    iqrf_tr.pulse_led(IqrfTrPnum.LEDG)
                     print('On')
                 elif command == 'off' or command == 'vypnout':
                     # TODO: send request to smart socket
