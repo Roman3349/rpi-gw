@@ -36,12 +36,16 @@ def read_sms(gsm, iqrf):
             if device == 'ledg':
                 if command == 'on' or command == 'zapnout':
                     response = iqrf_tr.led_on(address, IqrfTrPnum.LEDG)
+                    print('[LEDG](ON): ' + response)
                 elif command == 'off' or command == 'vypnout':
                     response = iqrf_tr.led_off(address, IqrfTrPnum.LEDG)
+                    print('[LEDG](OFF): ' + response)
                 elif command == 'blink' or command == 'bliknuti':
                     response = iqrf_tr.led_pulse(address, IqrfTrPnum.LEDG)
+                    print('[LEDG](BLINK): ' + response)
                 elif command == 'status' or command == 'stav':
                     response = iqrf_tr.led_status(address, IqrfTrPnum.LEDG)
+                    print('[LEDG](STATUS): ' + response)
                 else:
                     print('Unknown')
                     content = 'Unknown command!\r\nNeznamy prikaz!'
@@ -49,16 +53,22 @@ def read_sms(gsm, iqrf):
             elif device == 'ledr':
                 if command == 'on' or command == 'zapnout':
                     response = iqrf_tr.led_on(address, IqrfTrPnum.LEDR)
+                    print('[LEDG](ON): ' + response)
                 elif command == 'off' or command == 'vypnout':
                     response = iqrf_tr.led_off(address, IqrfTrPnum.LEDR)
+                    print('[LEDG](OFF): ' + response)
                 elif command == 'blink' or command == 'bliknuti':
                     response = iqrf_tr.led_pulse(address, IqrfTrPnum.LEDR)
+                    print('[LEDG](BLINK): ' + response)
                 elif command == 'status' or command == 'stav':
                     response = iqrf_tr.led_status(address, IqrfTrPnum.LEDR)
+                    print('[LEDG](STATUS): ' + response)
                 else:
                     print('Unknown')
                     content = 'Unknown command!\r\nNeznamy prikaz!'
                     # gsm.send_sms(i['number'], content)
+            elif device == 'thermometer' or device == 'teplomer':
+                response = iqrf_tr.thermometer_read(address)
             elif device == 'socket' or device == 'zasuvka':
                 if command == 'on' or command == 'zapnout':
                     # TODO: send request to smart socket
@@ -76,6 +86,7 @@ def read_sms(gsm, iqrf):
             else:
                 print('Uknown device')
     threading.Timer(1, read_sms, [gsm, iqrf]).start()
+
 
 if __name__ == "__main__":
     sys.exit(main())
