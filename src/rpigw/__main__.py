@@ -5,6 +5,7 @@ from rpigw.util.config import Config
 from rpigw.transport.gsm import Gsm
 from rpigw.transport.iqrf import Iqrf
 from rpigw.device.iqrf_tr import IqrfTr, IqrfTrPnum
+from rpigw.device.smart_socket import SmartSocket
 
 
 def main():
@@ -25,6 +26,7 @@ def main():
 
 def read_sms(gsm, iqrf):
     iqrf_tr = IqrfTr(iqrf)
+    smart_socket = SmartSocket(iqrf)
     sms = gsm.read_sms('REC UNREAD')
     for i in sms:
         content = i['content']
@@ -36,16 +38,20 @@ def read_sms(gsm, iqrf):
             if device == 'ledg':
                 if command == 'on' or command == 'zapnout':
                     response = iqrf_tr.led_on(address, IqrfTrPnum.LEDG)
-                    print('[LEDG](ON): ' + response)
+                    print('[LEDG](ON): ')
+                    print(response)
                 elif command == 'off' or command == 'vypnout':
                     response = iqrf_tr.led_off(address, IqrfTrPnum.LEDG)
-                    print('[LEDG](OFF): ' + response)
+                    print('[LEDG](OFF): ')
+                    print(response)
                 elif command == 'blink' or command == 'bliknuti':
                     response = iqrf_tr.led_pulse(address, IqrfTrPnum.LEDG)
-                    print('[LEDG](BLINK): ' + response)
+                    print('[LEDG](BLINK): ')
+                    print(response)
                 elif command == 'status' or command == 'stav':
                     response = iqrf_tr.led_status(address, IqrfTrPnum.LEDG)
-                    print('[LEDG](STATUS): ' + response)
+                    print('[LEDG](STATUS): ')
+                    print(response)
                 else:
                     print('Unknown')
                     content = 'Unknown command!\r\nNeznamy prikaz!'
@@ -53,32 +59,41 @@ def read_sms(gsm, iqrf):
             elif device == 'ledr':
                 if command == 'on' or command == 'zapnout':
                     response = iqrf_tr.led_on(address, IqrfTrPnum.LEDR)
-                    print('[LEDG](ON): ' + response)
+                    print('[LEDG](ON): ')
+                    print(response)
                 elif command == 'off' or command == 'vypnout':
                     response = iqrf_tr.led_off(address, IqrfTrPnum.LEDR)
-                    print('[LEDG](OFF): ' + response)
+                    print('[LEDG](OFF): ')
+                    print(response)
                 elif command == 'blink' or command == 'bliknuti':
                     response = iqrf_tr.led_pulse(address, IqrfTrPnum.LEDR)
-                    print('[LEDG](BLINK): ' + response)
+                    print('[LEDG](BLINK): ')
+                    print(response)
                 elif command == 'status' or command == 'stav':
                     response = iqrf_tr.led_status(address, IqrfTrPnum.LEDR)
-                    print('[LEDG](STATUS): ' + response)
+                    print('[LEDG](STATUS): ')
+                    print(response)
                 else:
                     print('Unknown')
                     content = 'Unknown command!\r\nNeznamy prikaz!'
                     # gsm.send_sms(i['number'], content)
             elif device == 'thermometer' or device == 'teplomer':
                 response = iqrf_tr.thermometer_read(address)
+                print('[THERMOMETER]: ')
+                print(response)
             elif device == 'socket' or device == 'zasuvka':
                 if command == 'on' or command == 'zapnout':
-                    # TODO: send request to smart socket
-                    print('On')
+                    response = smart_socket.set(address, 1)
+                    print('[Smart socket](ON): ')
+                    print(response)
                 elif command == 'off' or command == 'vypnout':
-                    # TODO: send request to smart socket
-                    print('Off')
+                    response = smart_socket.get(address, 0)
+                    print('[Smart socket](OFF): ')
+                    print(response)
                 elif command == 'status' or command == 'stav':
-                    # TODO: send request to smart socket
-                    print('Status')
+                    response = smart_socket.get(address)
+                    print('[Smart socket](STATUS): ')
+                    print(response)
                 else:
                     print('Unknown')
                     content = 'Unknown command!\r\nNeznamy prikaz!'
