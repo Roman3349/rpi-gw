@@ -13,8 +13,8 @@ An implementation of a my smart socket DPA commands.
 from rpigw.device.iqrf_tr import IqrfTrPnum
 
 
-class SmartSocketPnum(IqrfTrPnum):
-    SMART_SOCKET = 0x20
+# class SmartSocketPnum(IqrfTrPnum):
+#     SMART_SOCKET = 0x20
 
 
 class SmartSocket(object):
@@ -57,15 +57,15 @@ class SmartSocket(object):
             # pnum = SmartSocketPnum.SMART_SOCKET
             # packet = bytes([nadr, 0x00, pnum, status, hwpid1, hwpid2])
             pnum = IqrfTrPnum.IO
-            packet0 = bytes([nadr, 0x00, pnum, 0x01, hwpid1, hwpid2])
+            packet0 = bytes([nadr, 0x00, pnum, 0x01, hwpid1, hwpid2, 0x02, 0x04, 0x00])
             self.iqrf.send_request(packet0)
-            packet1 = bytes([nadr, 0x00, pnum, 0x01, hwpid1, hwpid2])
+            packet1 = bytes([nadr, 0x00, pnum, 0x01, hwpid1, hwpid2, 0x02, 0xA0, 0x00])
             self.iqrf.send_request(packet1)
         elif status == 1:
             # pnum = SmartSocketPnum.SMART_SOCKET
             # packet = bytes([nadr, 0x00, pnum, status, hwpid1, hwpid2])
             pnum = IqrfTrPnum.IO
-            packet0 = bytes([nadr, 0x00, pnum, 0x01, hwpid1, hwpid2])
+            packet0 = bytes([nadr, 0x00, pnum, 0x01, hwpid1, hwpid2, 0x02, 0x04, 0x04])
             self.iqrf.send_request(packet0)
-            packet1 = bytes([nadr, 0x00, pnum, 0x01, hwpid1, hwpid2])
+            packet1 = bytes([nadr, 0x00, pnum, 0x01, hwpid1, hwpid2, 0x02, 0xA0, 0xA0])
             self.iqrf.send_request(packet1)
