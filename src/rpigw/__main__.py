@@ -87,7 +87,7 @@ def read_sms(gsm, iqrf):
                     print('[Smart socket](ON): ')
                     print(response)
                 elif command == 'off' or command == 'vypnout':
-                    response = smart_socket.get(address, 0)
+                    response = smart_socket.set(address, 0)
                     print('[Smart socket](OFF): ')
                     print(response)
                 elif command == 'status' or command == 'stav':
