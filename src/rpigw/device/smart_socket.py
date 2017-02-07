@@ -28,7 +28,7 @@ class SmartSocket(object):
         # packet = bytes([nadr, 0x00, pnum, 0x02, hwpid1, hwpid2])
         pnum = IqrfTrPnum.IO
         packet = bytes([nadr, 0x00, pnum, 0x00, hwpid1, hwpid2, 0x00, 0x21, 0x00, 0x01, 0x10, 0x00, 0x02, 0xFC, 0x00])
-        self.iqrf.send_request(packet)
+        return self.iqrf.send_request(packet)
 
     def get(self, nadr, hwpid=0xFFFF):
         """
@@ -56,10 +56,10 @@ class SmartSocket(object):
             # packet = bytes([nadr, 0x00, pnum, status, hwpid1, hwpid2])
             pnum = IqrfTrPnum.IO
             packet = bytes([nadr, 0x00, pnum, 0x01, hwpid1, hwpid2, 0x00, 0x21, 0x00, 0x01, 0x10, 0x00, 0x02, 0xFC, 0x00])
-            self.iqrf.send_request(packet)
+            return self.iqrf.send_request(packet)
         elif status == 1:
             # pnum = SmartSocketPnum.SMART_SOCKET
             # packet = bytes([nadr, 0x00, pnum, status, hwpid1, hwpid2])
             pnum = IqrfTrPnum.IO
             packet = bytes([nadr, 0x00, pnum, 0x01, hwpid1, hwpid2, 0x00, 0x21, 0x21, 0x01, 0x10, 0x10, 0x02, 0xFC, 0xFC])
-            self.iqrf.send_request(packet)
+            return self.iqrf.send_request(packet)
