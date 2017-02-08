@@ -100,6 +100,7 @@ def read_sms(gsm, iqrf):
                     # gsm.send_sms(i['number'], content)
             else:
                 print('Uknown device')
+        gsm.delete_sms(i['id'])
     threading.Timer(1, read_sms, [gsm, iqrf]).start()
 
 
