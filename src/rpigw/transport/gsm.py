@@ -59,7 +59,6 @@ class Gsm(object):
         @param data Data to send
         """
         data += ending
-        print(data)
         self.serial.write(data.encode('utf-8'))
         time.sleep(0.5)
 
