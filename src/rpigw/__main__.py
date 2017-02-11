@@ -16,11 +16,6 @@ def main():
     gsm.write('AT')
     print(gsm.read())
     read_sms(gsm, iqrf)
-    # print(gsm.read_sms('ALL'))
-    # gsm.send_sms('+420702888729', 'Test')
-    # print(gsm.read())
-    # gsm.delete_sms(1)
-    # print(gsm.read())
     return 0
 
 
@@ -31,7 +26,17 @@ def read_sms(gsm, iqrf):
     for i in sms:
         content = i['content']
         array = content.split()
-        if len(array) is 3:
+        if len(array) is 2:
+            device = array[0].lower()
+            address = int(array[1])
+            if device == 'thermometer' or device == 'teplomer':
+                response = iqrf_tr.thermometer_read(address)
+                temperature = iqrf_tr.thermometer_decode(response)
+                print('[THERMOMETER]: ')
+                print(response)
+                content = 'Teplota: ' + temperature
+                gsm.send_sms(i['number'], content)
+        elif len(array) is 3:
             device = array[0].lower()
             address = int(array[1])
             command = array[2].lower()
@@ -53,9 +58,9 @@ def read_sms(gsm, iqrf):
                     print('[LEDG](STATUS): ')
                     print(response)
                 else:
-                    print('Unknown')
-                    content = 'Unknown command!\r\nNeznamy prikaz!'
-                    # gsm.send_sms(i['number'], content)
+                    print('Unknown command')
+                    content = 'Neznamy prikaz!'
+                    gsm.send_sms(i['number'], content)
             elif device == 'ledr':
                 if command == 'on' or command == 'zapnout':
                     response = iqrf_tr.led_on(address, IqrfTrPnum.LEDR)
@@ -74,13 +79,9 @@ def read_sms(gsm, iqrf):
                     print('[LEDG](STATUS): ')
                     print(response)
                 else:
-                    print('Unknown')
-                    content = 'Unknown command!\r\nNeznamy prikaz!'
-                    # gsm.send_sms(i['number'], content)
-            elif device == 'thermometer' or device == 'teplomer':
-                response = iqrf_tr.thermometer_read(address)
-                print('[THERMOMETER]: ')
-                print(response)
+                    print('Unknown command')
+                    content = 'Neznamy prikaz!'
+                    gsm.send_sms(i['number'], content)
             elif device == 'socket' or device == 'zasuvka':
                 if command == 'on' or command == 'zapnout':
                     response = smart_socket.set(address, 1)
@@ -95,11 +96,13 @@ def read_sms(gsm, iqrf):
                     print('[Smart socket](STATUS): ')
                     print(response)
                 else:
-                    print('Unknown')
-                    content = 'Unknown command!\r\nNeznamy prikaz!'
-                    # gsm.send_sms(i['number'], content)
+                    print('Unknown command')
+                    content = 'Neznamy prikaz!'
+                    gsm.send_sms(i['number'], content)
             else:
                 print('Uknown device')
+                content = 'Nezname zarizeni!'
+                gsm.send_sms(i['number'], content)
         gsm.delete_sms(i['id'])
     threading.Timer(1, read_sms, [gsm, iqrf]).start()
 
