@@ -34,7 +34,7 @@ def read_sms(gsm, iqrf):
                 temperature = iqrf_tr.thermometer_decode(response)
                 print('[THERMOMETER]: ')
                 print(response)
-                content = 'Teplota: ' + temperature
+                content = 'Teplota: ' + str(temperature['float'])
                 gsm.send_sms(i['number'], content)
         elif len(array) is 3:
             device = array[0].lower()
