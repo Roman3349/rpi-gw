@@ -93,3 +93,14 @@ class IqrfTr(object):
         pnum = IqrfTrPnum.THERMOMETER
         packet = bytes([nadr, 0x00, pnum, 0x00, hwpid1, hwpid2])
         return self.iqrf.send_request(packet)
+
+    def thermometer_decode(self, response):
+        """
+        Decode temperature from DPA response
+        @param response DPA response
+        """
+        data = response['response']
+        temp_int = data[8]
+        temp_float = ((data[10] << 8) | data[9]) / 16
+        if temp_int == int(temp_float):
+            return {'int': temp_int, 'float': temp_float}
