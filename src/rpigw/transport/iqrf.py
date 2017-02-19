@@ -10,8 +10,6 @@ An implementation of a IQRF networking.
 :license: GNU GPLv3, see LICENSE for more details.
 """
 
-import time
-
 from iqrf.transport import cdc
 from iqrf.transport import spi
 
@@ -48,6 +46,5 @@ class Iqrf(object):
         elif self.interface == 'spi':
             self.device.send(spi.DataSendRequest(packet), timeout=5)
         confirmation = self.device.receive(timeout=5).data
-        time.sleep(0.5)
         response = self.device.receive(timeout=5).data
         return {"confirmation": confirmation, "response": response}

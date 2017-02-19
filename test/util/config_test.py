@@ -15,6 +15,9 @@ import unittest
 from rpigw.util import config
 
 READ_CONFIG = {
+  "app": {
+    "enable-sms-feedback": True
+  },
   "gsm": {
     "enabled": True,
     "interface": "uart",

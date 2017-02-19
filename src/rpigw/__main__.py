@@ -13,16 +13,15 @@ def main():
     config = Config(config_file).read()
     gsm = Gsm(config)
     iqrf = Iqrf(config)
-    gsm.write('AT')
-    print(gsm.read())
-    read_sms(gsm, iqrf)
+    read_sms(gsm, iqrf, config)
     return 0
 
 
-def read_sms(gsm, iqrf):
+def read_sms(gsm, iqrf, config):
     iqrf_tr = IqrfTr(iqrf)
     smart_socket = SmartSocket(iqrf)
     sms = gsm.read_sms('REC UNREAD')
+    sms_feedback = config['app']['enable-sms-feedback']
     for i in sms:
         content = i['content']
         array = content.split()
@@ -34,8 +33,9 @@ def read_sms(gsm, iqrf):
                 temperature = iqrf_tr.thermometer_decode(response)
                 print('[THERMOMETER]: ')
                 print(response)
-                content = 'Teplota: ' + str(temperature['float'])
-                gsm.send_sms(i['number'], content)
+                if sms_feedback:
+                    content = 'Teplota: ' + str(temperature['float']) + '*C'
+                    gsm.send_sms(i['number'], content)
         elif len(array) is 3:
             device = array[0].lower()
             address = int(array[1])
@@ -87,10 +87,16 @@ def read_sms(gsm, iqrf):
                     response = smart_socket.set(address, 1)
                     print('[Smart socket](ON): ')
                     print(response)
+                    if sms_feedback and response['response'][6] == 0x00:
+                        content = 'Zasuvka byla zapnuta.'
+                        gsm.send_sms(i['number'], content)
                 elif command == 'off' or command == 'vypnout':
                     response = smart_socket.set(address, 0)
                     print('[Smart socket](OFF): ')
                     print(response)
+                    if sms_feedback and response['response'][6] == 0x00:
+                        content = 'Zasuvka byla vypnuta.'
+                        gsm.send_sms(i['number'], content)
                 elif command == 'status' or command == 'stav':
                     response = smart_socket.get(address)
                     print('[Smart socket](STATUS): ')
@@ -104,7 +110,7 @@ def read_sms(gsm, iqrf):
                 content = 'Nezname zarizeni!'
                 gsm.send_sms(i['number'], content)
         gsm.delete_sms(i['id'])
-    threading.Timer(1, read_sms, [gsm, iqrf]).start()
+    threading.Timer(1, read_sms, [gsm, iqrf, config]).start()
 
 
 if __name__ == "__main__":

@@ -1,3 +1,6 @@
+app:
+  enable-sms-feedback: true
+
 gsm:
   enabled: true
   interface: uart
