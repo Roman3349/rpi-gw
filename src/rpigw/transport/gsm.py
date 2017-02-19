@@ -67,6 +67,7 @@ class Gsm(object):
         Reset the AT modem
         """
         self.write('ATZ')
+        return self.read()
 
     def unlock(self):
         """
@@ -124,6 +125,7 @@ class Gsm(object):
         @param msg_id ID of the text message
         """
         self.write('AT+CMGD=' + str(msg_id))
+        return self.read()
 
     def send_sms(self, number, text):
         """
@@ -134,3 +136,4 @@ class Gsm(object):
         self.write('AT+CMGS="' + str(number) + '"')
         time.sleep(1)
         self.write(text, chr(26))
+        return self.read()
