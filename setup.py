@@ -17,6 +17,12 @@ setup(
         "rpigw.transport",
         "rpigw.util"
     ],
+    entry_points={
+        "console_scripts": [
+            "rpigw = rpigw.__main__:main",
+            "rpi-gw = rpigw.__main__:main"
+        ]
+},
     license="GPL v3",
     long_description=long_description,
     classifiers=[
@@ -29,9 +35,10 @@ setup(
         "Programming Language :: Python :: 3.6",
         "Topic :: Communications",
     ],
+    dependency_links=["https://github.com/iqrfsdk/pylibiqrf/tarball/master#egg=pylibiqrf-0.0.1"],
     install_requires=[
         "pyserial >= 3.1.1",
-        "PyYAML >= 3.12"
-#        "pylibiqrf >= 0.0.1"
+        "PyYAML >= 3.12",
+        "pylibiqrf >= 0.0.1"
     ]
 )
