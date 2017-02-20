@@ -1,5 +1,6 @@
 import sys
 import threading
+import argparse
 
 from rpigw.util.config import Config
 from rpigw.transport.gsm import Gsm
@@ -9,8 +10,12 @@ from rpigw.device.smart_socket import SmartSocket
 
 
 def main():
-    config_file = "./../../test/config.yml"
-    config = Config(config_file).read()
+    parser = argparse.ArgumentParser(usage="usage: %(prog)s [options]")
+    parser.add_argument("-c", "--config", action="store", type=str,
+                        dest="config", default="./../../test/config.yml",
+                        help="Config file path")
+    args = parser.parse_args()
+    config = Config(args.config).read()
     gsm = Gsm(config)
     iqrf = Iqrf(config)
     read_sms(gsm, iqrf, config)
