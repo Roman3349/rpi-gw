@@ -1,0 +1,10 @@
+[Unit]
+Description=Raspberry Pi IQRF and GSM gateway
+
+[Service]
+ExecStart=rpigw -c /root/rpigw/config.yml
+StandardOutput=null
+
+[Install]
+WantedBy=multi-user.target
+Alias=rpigw.service
