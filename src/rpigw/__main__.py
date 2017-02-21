@@ -1,44 +1,50 @@
 import sys
 import threading
 import argparse
+import logging
 
 from rpigw.util.config import Config
 from rpigw.transport.gsm import Gsm
 from rpigw.transport.iqrf import Iqrf
 from rpigw.device.iqrf_tr import IqrfTr, IqrfTrPnum
 from rpigw.device.smart_socket import SmartSocket
+from systemd.journal import JournalHandler
 
 
 def main():
-    print('Starting rpigw...')
     parser = argparse.ArgumentParser(usage='usage: %(prog)s [options]')
     parser.add_argument('-c', '--config', action='store', type=str,
                         dest='config', default='/etc/rpigw/config.yml',
                         help='Config file path')
     args = parser.parse_args()
+    log = logging.getLogger('rpigw')
+    log.addHandler(JournalHandler())
+    log.setLevel(logging.DEBUG)
+    log.info('Starting rpigw...')
     config = Config(args.config).read()
     gsm = Gsm(config)
     iqrf = Iqrf(config)
     sms = gsm.read_sms('ALL')
-    print('Deleting an old text messages...')
+    log.info('Deleting an old text messages...')
     for i in sms:
         if i:
-            sms.delete_sms(i['id'])
+            gsm.delete_sms(i['id'])
     try:
-        read_sms(gsm, iqrf, config)
-    except KeyboardInterrupt is interrupt:
-        sys.exit()
-    except Exception as exception:
-        read_sms(gsm, iqrf, config)
-        print('An error occured:', type(error), error)
+        read_sms(gsm, iqrf, config, log)
+    except Exception as error:
+        log.error('An error occured:', type(error), error)
     return 0
 
 
-def read_sms(gsm, iqrf, config):
+def read_sms(gsm, iqrf, config, log):
     iqrf_tr = IqrfTr(iqrf)
     smart_socket = SmartSocket(iqrf)
-    sms = gsm.read_sms('ALL')
+    sms = gsm.read_sms('REC UNREAD')
     sms_feedback = config['app']['enable-sms-feedback']
+    if sms_feedback:
+        log.info('A text message feedback is enabled.')
+    else:
+        log.info('A text message feedback is disabled.')
     for i in sms:
         content = i['content']
         array = content.split()
@@ -48,8 +54,8 @@ def read_sms(gsm, iqrf, config):
             if device == 'thermometer' or device == 'teplomer':
                 response = iqrf_tr.thermometer_read(address)
                 temperature = iqrf_tr.thermometer_decode(response)
-                print('[THERMOMETER]: ')
-                print(response)
+                log.debug('[THERMOMETER]: ')
+                log.debug(response)
                 if sms_feedback:
                     content = 'Teplota: ' + str(temperature['float']) + '*C'
                     gsm.send_sms(i['number'], content)
@@ -60,70 +66,70 @@ def read_sms(gsm, iqrf, config):
             if device == 'ledg':
                 if command == 'on' or command == 'zapnout':
                     response = iqrf_tr.led_on(address, IqrfTrPnum.LEDG)
-                    print('[LEDG](ON): ')
-                    print(response)
+                    log.debug('[LEDG](ON): ')
+                    log.debug(response)
                 elif command == 'off' or command == 'vypnout':
                     response = iqrf_tr.led_off(address, IqrfTrPnum.LEDG)
-                    print('[LEDG](OFF): ')
-                    print(response)
+                    log.debug('[LEDG](OFF): ')
+                    log.debug(response)
                 elif command == 'blink' or command == 'bliknuti':
                     response = iqrf_tr.led_pulse(address, IqrfTrPnum.LEDG)
-                    print('[LEDG](BLINK): ')
-                    print(response)
+                    log.debug('[LEDG](BLINK): ')
+                    log.debug(response)
                 elif command == 'status' or command == 'stav':
                     response = iqrf_tr.led_status(address, IqrfTrPnum.LEDG)
-                    print('[LEDG](STATUS): ')
-                    print(response)
+                    log.debug('[LEDG](STATUS): ')
+                    log.debug(response)
                 else:
-                    print('Unknown command')
+                    log.debug('Unknown command')
                     content = 'Neznamy prikaz!'
                     gsm.send_sms(i['number'], content)
             elif device == 'ledr':
                 if command == 'on' or command == 'zapnout':
                     response = iqrf_tr.led_on(address, IqrfTrPnum.LEDR)
-                    print('[LEDG](ON): ')
-                    print(response)
+                    log.debug('[LEDG](ON): ')
+                    log.debug(response)
                 elif command == 'off' or command == 'vypnout':
                     response = iqrf_tr.led_off(address, IqrfTrPnum.LEDR)
-                    print('[LEDG](OFF): ')
-                    print(response)
+                    log.debug('[LEDG](OFF): ')
+                    log.debug(response)
                 elif command == 'blink' or command == 'bliknuti':
                     response = iqrf_tr.led_pulse(address, IqrfTrPnum.LEDR)
-                    print('[LEDG](BLINK): ')
-                    print(response)
+                    log.debug('[LEDG](BLINK): ')
+                    log.debug(response)
                 elif command == 'status' or command == 'stav':
                     response = iqrf_tr.led_status(address, IqrfTrPnum.LEDR)
-                    print('[LEDG](STATUS): ')
-                    print(response)
+                    log.debug('[LEDG](STATUS): ')
+                    log.debug(response)
                 else:
-                    print('Unknown command')
+                    log.debug('Unknown command')
                     content = 'Neznamy prikaz!'
                     gsm.send_sms(i['number'], content)
             elif device == 'socket' or device == 'zasuvka':
                 if command == 'on' or command == 'zapnout':
                     response = smart_socket.set(address, 1)
-                    print('[Smart socket](ON): ')
-                    print(response)
+                    log.debug('[Smart socket](ON): ')
+                    log.debug(response)
                     if sms_feedback and response['response'][6] == 0x00:
                         content = 'Zasuvka byla zapnuta.'
                         gsm.send_sms(i['number'], content)
                 elif command == 'off' or command == 'vypnout':
                     response = smart_socket.set(address, 0)
-                    print('[Smart socket](OFF): ')
-                    print(response)
+                    log.debug('[Smart socket](OFF): ')
+                    log.debug(response)
                     if sms_feedback and response['response'][6] == 0x00:
                         content = 'Zasuvka byla vypnuta.'
                         gsm.send_sms(i['number'], content)
                 elif command == 'status' or command == 'stav':
                     response = smart_socket.get(address)
-                    print('[Smart socket](STATUS): ')
-                    print(response)
+                    log.debug('[Smart socket](STATUS): ')
+                    log.debug(response)
                 else:
-                    print('Unknown command')
+                    log.debug('Unknown command')
                     content = 'Neznamy prikaz!'
                     gsm.send_sms(i['number'], content)
             else:
-                print('Uknown device')
+                log.debug('Uknown device')
                 content = 'Nezname zarizeni!'
                 gsm.send_sms(i['number'], content)
         gsm.delete_sms(i['id'])
