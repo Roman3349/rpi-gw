@@ -2,6 +2,10 @@
 
 # Instalation script for Raspberry Pi IQRF and GSM gateway
 
+# Install python3-systemd
+sudo aptitude update
+sudo aptitude install python3-systemd
+
 # Install application
 sudo python3 setup.py install
 

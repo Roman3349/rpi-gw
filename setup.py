@@ -41,7 +41,6 @@ setup(
     install_requires=[
         "pyserial >= 3.1.1",
         "PyYAML >= 3.12",
-        "pylibiqrf >= 0.0.1",
-        "systemd-python >= 233"
+        "pylibiqrf >= 0.0.1"
     ]
 )
