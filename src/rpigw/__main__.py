@@ -22,7 +22,8 @@ def main():
     sms = gsm.read_sms('ALL')
     print('Deleting an old text messages...')
     for i in sms:
-        sms.delete_sms(i['id'])
+        if i:
+            sms.delete_sms(i['id'])
     try:
         read_sms(gsm, iqrf, config)
     except KeyboardInterrupt is interrupt:
@@ -36,7 +37,7 @@ def main():
 def read_sms(gsm, iqrf, config):
     iqrf_tr = IqrfTr(iqrf)
     smart_socket = SmartSocket(iqrf)
-    sms = gsm.read_sms('REC UNREAD')
+    sms = gsm.read_sms('ALL')
     sms_feedback = config['app']['enable-sms-feedback']
     for i in sms:
         content = i['content']
