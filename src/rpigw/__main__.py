@@ -26,6 +26,10 @@ def main():
     iqrf = Iqrf(config)
     sms = gsm.read_sms('ALL')
     log.info('Deleting an old text messages...')
+    if config['app']['enable-sms-feedback']:
+        log.info('A text message feedback is enabled.')
+    else:
+        log.info('A text message feedback is disabled.')
     for i in sms:
         if i:
             gsm.delete_sms(i['id'])
@@ -40,11 +44,6 @@ def read_sms(gsm, iqrf, config, log):
     iqrf_tr = IqrfTr(iqrf)
     smart_socket = SmartSocket(iqrf)
     sms = gsm.read_sms('REC UNREAD')
-    sms_feedback = config['app']['enable-sms-feedback']
-    if sms_feedback:
-        log.info('A text message feedback is enabled.')
-    else:
-        log.info('A text message feedback is disabled.')
     for i in sms:
         content = i['content']
         array = content.split()
@@ -133,7 +132,7 @@ def read_sms(gsm, iqrf, config, log):
                 content = 'Nezname zarizeni!'
                 gsm.send_sms(i['number'], content)
         gsm.delete_sms(i['id'])
-    threading.Timer(1, read_sms, [gsm, iqrf, config]).start()
+    threading.Timer(1, read_sms, [gsm, iqrf, config, log]).start()
 
 
 if __name__ == '__main__':
