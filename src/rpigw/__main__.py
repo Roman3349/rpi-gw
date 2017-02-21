@@ -22,7 +22,7 @@ def main():
     sms = gsm.read_sms('ALL')
     print('Deleting an old text messages...')
     for i in sms:
-        sm.delete_sms(i['id'])
+        sms.delete_sms(i['id'])
     try:
         read_sms(gsm, iqrf, config)
     except KeyboardInterrupt is interrupt:
