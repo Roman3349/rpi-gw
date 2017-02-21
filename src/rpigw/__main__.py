@@ -10,15 +10,26 @@ from rpigw.device.smart_socket import SmartSocket
 
 
 def main():
-    parser = argparse.ArgumentParser(usage="usage: %(prog)s [options]")
-    parser.add_argument("-c", "--config", action="store", type=str,
-                        dest="config", default="/etc/rpigw/config.yml",
-                        help="Config file path")
+    print('Starting rpigw...')
+    parser = argparse.ArgumentParser(usage='usage: %(prog)s [options]')
+    parser.add_argument('-c', '--config', action='store', type=str,
+                        dest='config', default='/etc/rpigw/config.yml',
+                        help='Config file path')
     args = parser.parse_args()
     config = Config(args.config).read()
     gsm = Gsm(config)
     iqrf = Iqrf(config)
-    read_sms(gsm, iqrf, config)
+    sms = gsm.read_sms('ALL')
+    print('Deleting an old text messages...')
+    for i in sms:
+        sm.delete_sms(i['id'])
+    try:
+        read_sms(gsm, iqrf, config)
+    except KeyboardInterrupt is interrupt:
+        sys.exit()
+    except Exception as exception:
+        read_sms(gsm, iqrf, config)
+        print('An error occured:', type(error), error)
     return 0
 
 
@@ -118,5 +129,5 @@ def read_sms(gsm, iqrf, config):
     threading.Timer(1, read_sms, [gsm, iqrf, config]).start()
 
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     sys.exit(main())
