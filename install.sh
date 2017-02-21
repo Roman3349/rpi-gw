@@ -10,7 +10,9 @@ sudo cp rpigw.service /lib/systemd/system/rpigw.service
 sudo chmod 644 /lib/systemd/system/rpigw.service
 
 # Make directory in /etc/ for a configuration file and copy it here
-sudo mkdir /etc/rpigw/
+if [ ! -d "/etc/rpigw/" ]; then
+  sudo mkdir /etc/rpigw/
+fi
 sudo cp test/config.yml /etc/rpigw/config.yml
 sudo chmod 644 /etc/rpigw/config.yml
 
