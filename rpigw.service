@@ -2,8 +2,8 @@
 Description=Raspberry Pi IQRF and GSM gateway
 
 [Service]
-ExecStart=rpigw
-StandardOutput=null
+Type=simple
+ExecStart=/usr/local/bin/rpigw
 
 [Install]
 WantedBy=multi-user.target
