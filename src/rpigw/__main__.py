@@ -12,7 +12,7 @@ from rpigw.device.smart_socket import SmartSocket
 def main():
     parser = argparse.ArgumentParser(usage="usage: %(prog)s [options]")
     parser.add_argument("-c", "--config", action="store", type=str,
-                        dest="config", default="./../../test/config.yml",
+                        dest="config", default="/etc/rpigw/config.yml",
                         help="Config file path")
     args = parser.parse_args()
     config = Config(args.config).read()
